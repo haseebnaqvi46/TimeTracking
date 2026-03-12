@@ -1,4 +1,6 @@
 ﻿using TimeTracking.Api.DTOs;
+using TimeTracking.Api.Models;
+using TimeTracking.Infrastructure.Entities;
 
 namespace TimeTracking.Api.Services
 {
@@ -9,5 +11,7 @@ namespace TimeTracking.Api.Services
         Task UpdateAsync(int id, UpdateTimeEntryDto dto);
 
         Task DeleteAsync(int id);
+
+        Task<PagedResult<TimeEntry>> GetAsync(TimeEntryQueryDto query);
     }
 }
