@@ -12,6 +12,6 @@ namespace TimeTracking.Api.Services
 
         Task DeleteAsync(int id);
 
-        Task<PagedResult<TimeEntry>> GetAsync(TimeEntryQueryDto query);
+        Task<PagedResult<TimeEntryResponseDto>> GetAsync(TimeEntryQueryDto query);
     }
 }

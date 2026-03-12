@@ -49,7 +49,7 @@ namespace TimeTracking.Api.Services
             var entry = await _context.TimeEntries.FindAsync(id);
 
             if (entry == null)
-                throw new Exception("Entry not found");
+                throw new KeyNotFoundException("Time entry not found");
 
             entry.EmployeeId = dto.EmployeeId;
             entry.ProjectId = dto.ProjectId;
@@ -65,14 +65,14 @@ namespace TimeTracking.Api.Services
             var entry = await _context.TimeEntries.FindAsync(id);
 
             if (entry == null)
-                throw new Exception("Entry not found");
+                throw new KeyNotFoundException("Time entry not found");
 
             _context.TimeEntries.Remove(entry);
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task<PagedResult<TimeEntry>> GetAsync(TimeEntryQueryDto query)
+        public async Task<PagedResult<TimeEntryResponseDto>> GetAsync(TimeEntryQueryDto query)
         {
             var data = _context.TimeEntries
                 .Include(x => x.Employee)
@@ -94,11 +94,20 @@ namespace TimeTracking.Api.Services
             var totalCount = await data.CountAsync();
 
             var items = await data
-                .Skip((query.Page - 1) * query.PageSize)
-                .Take(query.PageSize)
-                .ToListAsync();
+                        .Skip((query.Page - 1) * query.PageSize)
+                        .Take(query.PageSize)
+                        .Select(x => new TimeEntryResponseDto
+                        {
+                            Id = x.Id,
+                            EmployeeName = x.Employee.FullName,
+                            ProjectName = x.Project.Name,
+                            EntryDate = x.EntryDate,
+                            Hours = x.Hours,
+                            Notes = x.Notes
+                        })
+                        .ToListAsync();
 
-            return new PagedResult<TimeEntry>
+            return new PagedResult<TimeEntryResponseDto>
             {
                 Page = query.Page,
                 PageSize = query.PageSize,
