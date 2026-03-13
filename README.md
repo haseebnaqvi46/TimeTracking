@@ -29,7 +29,7 @@ Update the connection string in:
 **`TimeTracking.App/appsettings.json`**
 ```json
 "ConnectionStrings": {
-    "DefaultConnection": "Server=DESKTOP-OFFUL75\\MSSQLSERVER01;Database=TimeTrackingDb;Trusted_Connection=True;TrustServerCertificate=True"
+    "DefaultConnection": "Server=YourServer;Database=TimeTrackingDb;Trusted_Connection=True;TrustServerCertificate=True"
 }
 ```
 
